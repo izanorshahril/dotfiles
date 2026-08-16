@@ -75,6 +75,43 @@ flowchart TD
     Side -->|Tracks Lifecycle: working / idle / blocked| User
 ```
 
+## Recommended Tooling & Ecosystem (Kun Chen Stack)
+
+### 1. Agent Multiplexing & Orchestration
+- **Herdr**: Agent-native terminal multiplexer in Rust that tracks live agent lifecycle states (`working`, `idle`, `blocked`, `done`), session persistence, and programmatic socket APIs.
+- **First Mate**: Captain-and-crew orchestrator for delegating tasks to subagent panes across multiplexer workspaces.
+- **GNHF** ("Good Night, Have Fun"): Asynchronous goal orchestrator for autonomous overnight agent task execution.
+
+### 2. Worktree & Context Isolation
+- **Treehouse** / **`New-AgentWorktree`** (`gwt`): Git worktree automation for creating isolated branch workspaces per task to prevent dirty working trees.
+- **Global `AGENTS.md`**: Standardized system instruction specification (Agentic AI Foundation) establishing deterministic, token-efficient agent behavior.
+
+### 3. Agent eXperience Interface (AXI) Tools
+- **No-Mistakes**: Local git pre-push validation proxy that runs AI agents to lint, review, and test code before remote push.
+- **Lavish-AXI**: Local artifact visualizer for rapid interactive UI review.
+- **Quota-AXI**: Unified CLI tracker for multi-provider LLM rate limits and token windows.
+
+### 4. Modern CLI & Terminal Utilities
+- **Starship**: Blazing fast, minimal cross-shell prompt (`winget install Starship.Starship`).
+- **Zoxide**: Smarter `cd` command with frecency jumping (`winget install ajeetdsouza.zoxide`).
+- **Fzf**: Interactive command-line fuzzy finder (`winget install junegunn.fzf`).
+- **Eza**: Modern replacement for `ls` with file icons, git status, and tree views (`winget install eza-community.eza`).
+- **Bat**: Syntax-highlighted `cat` replacement (`winget install sharkdp.bat`).
+- **Delta**: Syntax-highlighting git diff pager (`winget install dandavison.delta`).
+- **Lazygit**: Fast terminal UI for git (`winget install JesseDuffield.lazygit`).
+- **Btop**: Terminal resource monitor for CPU, GPU, RAM (`winget install aristocratos.btop4win`).
+
+### 5. Package Managers & Runtimes
+- **UV**: Ultra-fast Python package resolver and runner (`winget install astral-sh.uv`).
+- **Bun**: Fast JavaScript runtime, bundler, and test runner (`powershell -c "irm bun.sh/install.ps1 | iex"`).
+
+### 6. Neovim Agentic Configuration
+- **Neovim (v0.11+)**: Configured with native `vim.lsp.config`, `vim.lsp.enable`, and `LspAttach` autocommands.
+- **Oil.nvim**: File explorer that edits directories like regular text buffers.
+- **Telescope.nvim**: Fuzzy finder for files, ripgrep searches, and LSP symbols.
+- **Treesitter**: Fast AST-based syntax highlighting and indentation.
+- **Which-Key.nvim**: Real-time visual keybinding popup.
+
 ## Installation & Deployment
 
 Run from PowerShell 7:
