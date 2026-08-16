@@ -40,7 +40,7 @@ dotfiles/
         └── rose-pine-moon.json
 ```
 
-## Architecture & Multi-Harness Sync
+## Architecture & Minimal Directives Topology
 
 ```mermaid
 flowchart TD
@@ -48,18 +48,18 @@ flowchart TD
     WT --> Profile[PowerShell 7 + PSReadLine]
     Profile --> HM[Herdr Multiplexer]
     
-    subgraph Directives [Universal Directives Sync Engine]
+    subgraph Directives [Standardized Open Directives]
         DotAgents[dotfiles/agents/AGENTS.md]
         CanonAgents[~/.agents/AGENTS.md]
-        DotAgents -->|HardLink / Sync| CanonAgents
-        CanonAgents --> Claude[Claude Code ~/.claude]
-        CanonAgents --> Codex[Codex CLI ~/.codex]
-        CanonAgents --> Gemini[Antigravity / Gemini ~/.gemini]
-        CanonAgents --> Pi[Pi-Agent ~/.pi]
-        CanonAgents --> Kilo[Kilo Code ~/.kilo]
-        CanonAgents --> OpenCode[OpenCode ~/.opencode]
-        CanonAgents --> Goose[Goose ~/.goose]
-        CanonAgents --> Cursor[Cursor ~/.cursor]
+        HomeAgents[~/AGENTS.md]
+        ClaudeMD[~/.claude/CLAUDE.md]
+        
+        DotAgents -->|Sync| CanonAgents
+        CanonAgents <-->|NTFS Hardlink| HomeAgents
+        DotAgents -->|Sync| ClaudeMD
+        
+        CanonAgents & HomeAgents -.-> AllHarnesses[All Harnesses: Codex, OpenCode, Pi, Kilo, Antigravity, Cursor, Goose, Aider]
+        ClaudeMD -.-> ClaudeCode[Claude Code]
     end
 
     subgraph HM [Herdr Multiplexer Session]
@@ -80,13 +80,13 @@ flowchart TD
 Run from PowerShell 7:
 
 ```powershell
-# One-shot idempotent installation (includes all harness links)
+# One-shot idempotent installation
 pwsh .\scripts\install.ps1
 
 # Sync live configs into repository
 pwsh .\scripts\sync.ps1
 
-# Refresh multi-harness hardlinks across all agents
+# Deploy / Refresh global agent directives
 pwsh .\scripts\setup-agent-links.ps1
 
 # Run diagnostic verification
@@ -120,5 +120,5 @@ pwsh .\scripts\test-env.ps1
 | `New-AgentWorktree` | `gwt` | Create isolated git worktree branch for agent task |
 | `Get-AgentWorktrees` | `gwtl` | List active git worktrees |
 | `Remove-AgentWorktree`| `gwtrm` | Safely remove worktree |
-| `Sync-AgentDirectives`| `sync-agents` | Re-link and sync `AGENTS.md` and `CLAUDE.md` across all harnesses |
+| `Sync-AgentDirectives`| `sync-agents` | Re-sync minimalist global directives |
 | `Set-WTBackdrop` | `backdrop`, `tb` | Toggle Windows Terminal acrylic / mica / solid backdrop |
