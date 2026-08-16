@@ -142,6 +142,17 @@ function Send-HerdrPrompt {
     herdr @args
 }
 
+function Sync-AgentDirectives {
+    [CmdletBinding()]
+    param()
+    $setupScript = "D:\dev\dotfiles\scripts\setup-agent-links.ps1"
+    if (Test-Path $setupScript) {
+        & $setupScript
+    } else {
+        Write-Warning "Setup script not found at $setupScript."
+    }
+}
+
 # Short aliases matching Kun Chen's muscle-memory shortcuts
 Set-Alias -Name h -Value Start-HerdrSession -ErrorAction SilentlyContinue
 Set-Alias -Name hs -Value Get-HerdrStatus -ErrorAction SilentlyContinue
@@ -150,5 +161,7 @@ Set-Alias -Name hlw -Value Get-HerdrWorkspaces -ErrorAction SilentlyContinue
 Set-Alias -Name hsplit -Value Split-HerdrPane -ErrorAction SilentlyContinue
 Set-Alias -Name hstart -Value Start-HerdrAgent -ErrorAction SilentlyContinue
 Set-Alias -Name hprompt -Value Send-HerdrPrompt -ErrorAction SilentlyContinue
+Set-Alias -Name sync-agents -Value Sync-AgentDirectives -ErrorAction SilentlyContinue
 
-Export-ModuleMember -Function Start-HerdrSession, Get-HerdrStatus, Get-HerdrAgents, Get-HerdrWorkspaces, Split-HerdrPane, Start-HerdrAgent, Send-HerdrPrompt -Alias h, hs, hla, hlw, hsplit, hstart, hprompt
+Export-ModuleMember -Function Start-HerdrSession, Get-HerdrStatus, Get-HerdrAgents, Get-HerdrWorkspaces, Split-HerdrPane, Start-HerdrAgent, Send-HerdrPrompt, Sync-AgentDirectives -Alias h, hs, hla, hlw, hsplit, hstart, hprompt, sync-agents
+

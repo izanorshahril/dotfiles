@@ -1,6 +1,7 @@
 # Agentic Dotfiles for Windows 11 (L8 Principal Setup)
 
 Reproducible, agent-native development environment tailored for Windows 11, PowerShell 7, Windows Terminal, and the **Herdr** agent multiplexer.
+Ported from Kun Chen's Principal Engineer workflow (`5N-okeDdIuI`, `kPN564Kol14`).
 
 ```
 dotfiles/
@@ -10,6 +11,8 @@ dotfiles/
 │   │   └── .gitignore_global
 │   ├── herdr/
 │   │   └── config.toml
+│   ├── nvim/
+│   │   └── init.lua
 │   └── starship/
 │       └── starship.toml
 ├── agents/
@@ -23,6 +26,7 @@ dotfiles/
 │       └── WTBackdrop.psm1
 ├── scripts/
 │   ├── install.ps1
+│   ├── setup-agent-links.ps1
 │   ├── setup-git.ps1
 │   ├── setup-herdr.ps1
 │   ├── setup-profile.ps1
@@ -36,7 +40,7 @@ dotfiles/
         └── rose-pine-moon.json
 ```
 
-## Architecture & Workflow
+## Architecture & Multi-Harness Sync
 
 ```mermaid
 flowchart TD
@@ -44,6 +48,20 @@ flowchart TD
     WT --> Profile[PowerShell 7 + PSReadLine]
     Profile --> HM[Herdr Multiplexer]
     
+    subgraph Directives [Universal Directives Sync Engine]
+        DotAgents[dotfiles/agents/AGENTS.md]
+        CanonAgents[~/.agents/AGENTS.md]
+        DotAgents -->|HardLink / Sync| CanonAgents
+        CanonAgents --> Claude[Claude Code ~/.claude]
+        CanonAgents --> Codex[Codex CLI ~/.codex]
+        CanonAgents --> Gemini[Antigravity / Gemini ~/.gemini]
+        CanonAgents --> Pi[Pi-Agent ~/.pi]
+        CanonAgents --> Kilo[Kilo Code ~/.kilo]
+        CanonAgents --> OpenCode[OpenCode ~/.opencode]
+        CanonAgents --> Goose[Goose ~/.goose]
+        CanonAgents --> Cursor[Cursor ~/.cursor]
+    end
+
     subgraph HM [Herdr Multiplexer Session]
         Side[Agent Status Sidebar]
         Pane1[Controller Pane]
@@ -62,8 +80,14 @@ flowchart TD
 Run from PowerShell 7:
 
 ```powershell
-# One-shot idempotent installation
+# One-shot idempotent installation (includes all harness links)
 pwsh .\scripts\install.ps1
+
+# Sync live configs into repository
+pwsh .\scripts\sync.ps1
+
+# Refresh multi-harness hardlinks across all agents
+pwsh .\scripts\setup-agent-links.ps1
 
 # Run diagnostic verification
 pwsh .\scripts\test-env.ps1
@@ -96,4 +120,5 @@ pwsh .\scripts\test-env.ps1
 | `New-AgentWorktree` | `gwt` | Create isolated git worktree branch for agent task |
 | `Get-AgentWorktrees` | `gwtl` | List active git worktrees |
 | `Remove-AgentWorktree`| `gwtrm` | Safely remove worktree |
+| `Sync-AgentDirectives`| `sync-agents` | Re-link and sync `AGENTS.md` and `CLAUDE.md` across all harnesses |
 | `Set-WTBackdrop` | `backdrop`, `tb` | Toggle Windows Terminal acrylic / mica / solid backdrop |

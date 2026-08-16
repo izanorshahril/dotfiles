@@ -33,4 +33,25 @@ if (Test-Path $starshipLive) {
     Write-Host "  ✅ Synced Starship config" -ForegroundColor Green
 }
 
+# 4. Neovim Config
+$nvimLive = "$env:LOCALAPPDATA\nvim\init.lua"
+if (Test-Path $nvimLive) {
+    $nvimTarget = "$repoRoot\.config\nvim"
+    if (-not (Test-Path $nvimTarget)) { New-Item -ItemType Directory -Path $nvimTarget -Force | Out-Null }
+    Copy-Item $nvimLive "$nvimTarget\init.lua" -Force
+    Write-Host "  ✅ Synced Neovim config" -ForegroundColor Green
+}
+
+# 5. Agent Directives
+$canonicalAgents = "$env:USERPROFILE\.agents\AGENTS.md"
+$canonicalClaude = "$env:USERPROFILE\.claude\CLAUDE.md"
+if (Test-Path $canonicalAgents) {
+    Copy-Item $canonicalAgents "$repoRoot\agents\AGENTS.md" -Force
+    Write-Host "  ✅ Synced AGENTS.md" -ForegroundColor Green
+}
+if (Test-Path $canonicalClaude) {
+    Copy-Item $canonicalClaude "$repoRoot\agents\CLAUDE.md" -Force
+    Write-Host "  ✅ Synced CLAUDE.md" -ForegroundColor Green
+}
+
 Write-Host "`n✨ Dotfiles repo is up to date with live system configs!" -ForegroundColor Green
