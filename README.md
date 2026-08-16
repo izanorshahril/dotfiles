@@ -1,6 +1,6 @@
 # Agentic Dotfiles for Windows 11 (L8 Principal Setup)
 
-Reproducible, agent-native development environment tailored for Windows 11, PowerShell 7, Windows Terminal, and the **Herdr** agent multiplexer. Ported from Kun Chen's Principal Engineer workflow (`5N-okeDdIuI`, `kPN564Kol14`).
+Reproducible, agent-native development environment tailored for Windows 11, PowerShell 7, Windows Terminal, and the **Herdr** agent multiplexer.
 
 ```
 dotfiles/
