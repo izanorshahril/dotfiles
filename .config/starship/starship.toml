@@ -54,7 +54,7 @@ deleted = "✘${count} "
 # Git state (rebase, merge, cherry-pick)
 [git_state]
 style = "bold #f6c177"
-format = "[\($state( $progress_current/$progress_total)\)]($style) "
+format = '[\($state( $progress_current/$progress_total)\)]($style) '
 
 # Prompt character
 [character]
