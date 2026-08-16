@@ -1,8 +1,8 @@
 # Minimal Multi-Harness Agent Directives Linker
 # Streamlined setup:
 # - CLAUDE.md is strictly restricted to ~/.claude/CLAUDE.md (where Claude Code expects it).
-# - AGENTS.md is the universal standard originating from ~/.agents/AGENTS.md and hardlinked
-#   only to the exact config locations needed by active harnesses.
+# - AGENTS.md is the universal standard originating from ~/.agents/AGENTS.md.
+# - Codex CLI and Goose natively load standard AGENTS.md (legacy instructions.md and .goosehints removed).
 
 param(
     [switch]$Force
@@ -29,18 +29,28 @@ Write-Host "  • AGENTS: $canonicalAgents (Universal Standard)" -ForegroundColo
 Write-Host "  • CLAUDE: $canonicalClaude (Claude Code only)" -ForegroundColor DarkCyan
 Write-Host ""
 
-# Clean up redundant legacy CLAUDE.md copies from other harnesses
-$redundantClaudeFiles = @(
+# Clean up redundant legacy files (instructions.md, .goosehints, .goose, and old CLAUDE copies)
+$legacyFilesToRemove = @(
     "$env:USERPROFILE\CLAUDE.md",
     "$env:USERPROFILE\.agents\CLAUDE.md",
     "$env:USERPROFILE\.config\agents\CLAUDE.md",
     "$env:USERPROFILE\.codex\CLAUDE.md",
+    "$env:USERPROFILE\.codex\instructions.md",
     "$env:USERPROFILE\.pi\CLAUDE.md",
-    "$env:USERPROFILE\.config\claude\CLAUDE.md"
+    "$env:USERPROFILE\.config\claude\CLAUDE.md",
+    "$env:USERPROFILE\.goosehints",
+    "$env:USERPROFILE\.goose\AGENTS.md",
+    "$env:USERPROFILE\.config\goose\AGENTS.md"
 )
-foreach ($file in $redundantClaudeFiles) {
+foreach ($file in $legacyFilesToRemove) {
     if (Test-Path $file) {
         Remove-Item $file -Force -ErrorAction SilentlyContinue
+    }
+}
+if (Test-Path "$env:USERPROFILE\.goose") {
+    # Remove directory if empty
+    if ((Get-ChildItem "$env:USERPROFILE\.goose" -ErrorAction SilentlyContinue).Count -eq 0) {
+        Remove-Item "$env:USERPROFILE\.goose" -Force -Recurse -ErrorAction SilentlyContinue
     }
 }
 
@@ -82,16 +92,14 @@ function Link-Directive {
 # ESSENTIAL HARNESS DIRECTIVE LINKS
 # ------------------------------------------------------------------------------
 
-# 1. Global User Root
+# 1. Global User Root (Generic fallback for any tool scanning ~)
 Link-Directive $canonicalAgents "$env:USERPROFILE\AGENTS.md" "User Root"
 
-# 2. Claude Code
-# Only CLAUDE.md at ~/.claude/CLAUDE.md; also link AGENTS.md in ~/.claude for tools referencing it
+# 2. Claude Code (Strictly isolated ~/.claude)
 Link-Directive $canonicalAgents "$env:USERPROFILE\.claude\AGENTS.md" "Claude Code"
 
-# 3. OpenAI Codex CLI
+# 3. OpenAI Codex CLI (Standard ~/.codex/AGENTS.md)
 Link-Directive $canonicalAgents "$env:USERPROFILE\.codex\AGENTS.md" "Codex CLI"
-Link-Directive $canonicalAgents "$env:USERPROFILE\.codex\instructions.md" "Codex CLI"
 
 # 4. Antigravity & Gemini CLI
 Link-Directive $canonicalAgents "$env:USERPROFILE\.gemini\AGENTS.md" "Antigravity/Gemini"
@@ -106,11 +114,7 @@ Link-Directive $canonicalAgents "$env:USERPROFILE\.kilo\AGENTS.md" "Kilo Code"
 # 7. OpenCode
 Link-Directive $canonicalAgents "$env:USERPROFILE\.opencode\AGENTS.md" "OpenCode"
 
-# 8. Goose
-Link-Directive $canonicalAgents "$env:USERPROFILE\.goose\AGENTS.md" "Goose"
-Link-Directive $canonicalAgents "$env:USERPROFILE\.goosehints" "Goose Hints"
-
-# 9. Cursor
+# 8. Cursor Rules
 Link-Directive $canonicalAgents "$env:USERPROFILE\.cursor\rules\AGENTS.md" "Cursor Rules"
 
 Write-Host "`n══════════════════════════════════════════════════════" -ForegroundColor Green
