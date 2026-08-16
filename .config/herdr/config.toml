@@ -1,0 +1,106 @@
+# herdr configuration (Windows Agentic Engineering Setup)
+# Ported from Kun Chen's L8 Principal Dev Environment for Windows 11
+# Location: %APPDATA%\herdr\config.toml (C:\Users\<User>\AppData\Roaming\herdr\config.toml)
+
+onboarding = false
+
+[theme]
+# Built-in theme matching Rosé Pine Moon aesthetic
+name = "rose-pine"
+auto_switch = false
+
+[theme.custom]
+accent = "#ea9a97"
+
+[terminal]
+# PowerShell 7 on Windows
+default_shell = "pwsh.exe"
+shell_mode = "auto"
+new_cwd = "follow"
+
+[update]
+channel = "preview"
+version_check = true
+manifest_check = true
+
+[ui]
+# Sidebar configuration for multi-agent status tracking
+sidebar_width = 28
+sidebar_min_width = 20
+sidebar_max_width = 38
+sidebar_start_collapsed = false
+sidebar_collapsed_mode = "compact"
+
+# Pane Aesthetics & Spacing
+pane_borders = true
+pane_scrollbars = false
+pane_gaps = true
+show_agent_labels_on_pane_borders = true
+hide_tab_bar_when_single_tab = false
+tab_bar_position = "top"
+
+# Accent Color (Rosé Pine Moon Rose / Iris)
+accent = "#ea9a97"
+
+# Agent & Space Panel Layout (grouped by workspace)
+agent_panel_sort = "spaces"
+
+# Mouse & Window Behavior
+mouse_capture = true
+copy_on_select = true
+host_cursor = "auto"
+redraw_on_focus_gained = true
+
+[ui.toast]
+delivery = "herdr"
+delay_seconds = 2
+
+[ui.toast.herdr]
+position = "bottom-right"
+
+[session]
+# Resume supported AI-agent panes into native conversations
+resume_agents_on_restore = true
+
+[experimental]
+pane_history = true
+
+# Keybindings: tmux / screen muscle-memory prefix (ctrl+a)
+[keys]
+prefix = "ctrl+a"
+
+# Workspace & Worktree Controls
+workspace_picker = "prefix+w"
+new_workspace = "prefix+shift+n"
+new_worktree = "prefix+shift+g"
+rename_workspace = "prefix+shift+w"
+close_workspace = "prefix+shift+d"
+
+# Tab Management
+new_tab = "prefix+c"
+rename_tab = "prefix+shift+t"
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
+close_tab = "prefix+shift+x"
+
+# Pane Controls & Layouts
+split_vertical = "prefix+v"
+split_horizontal = "prefix+minus"
+close_pane = "prefix+x"
+zoom = "prefix+z"
+resize_mode = "prefix+r"
+toggle_sidebar = "prefix+b"
+
+# Pane Navigation (Vim-style hjkl)
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+cycle_pane_next = "prefix+tab"
+cycle_pane_previous = "prefix+shift+tab"
+
+# Session & System
+detach = "prefix+q"
+reload_config = "prefix+shift+r"
+settings = "prefix+s"
+help = "prefix+?"

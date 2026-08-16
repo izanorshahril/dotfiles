@@ -1,0 +1,42 @@
+# Global Git Ignore - Windows & Agent Artifacts
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor & IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# AI Agent Artifacts & Transcripts
+.system_generated/
+*.agent.log
+.herdr/
+
+# Python / Node local scratch
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.npm/
+
+# Environment Variables & Secrets
+.env.local
+.env.*.local
+*.pem
+*.key

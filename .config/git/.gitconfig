@@ -1,0 +1,48 @@
+# Git Configuration - Windows Agentic Engineering
+# Location: ~/.gitconfig (C:\Users\<User>\.gitconfig)
+
+[core]
+    autocrlf = input
+    safecrlf = warn
+    excludesfile = ~/.config/git/.gitignore_global
+    editor = code --wait
+    longpaths = true
+    fscache = true
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+
+[fetch]
+    prune = true
+
+[diff]
+    colorMoved = default
+
+[merge]
+    conflictstyle = zdiff3
+
+[alias]
+    # Status & Log
+    st = status -sb
+    co = checkout
+    br = branch
+    ci = commit
+    last = log -1 HEAD --stat
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    
+    # Worktree workflow (Kun Chen / Treehouse style)
+    wt = worktree
+    wtl = worktree list
+    wta = worktree add
+    wtr = worktree remove
+    wtp = worktree prune
+
+    # Safety checks
+    uncommit = reset --soft HEAD~1
+    amend = commit --amend --no-edit
