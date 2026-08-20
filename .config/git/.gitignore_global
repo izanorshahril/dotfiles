@@ -1,6 +1,6 @@
-# Global Git Ignore - Windows & Agent Artifacts
+# Global Git Ignore - WSL2 & Agent Artifacts
 
-# Windows
+# OS metadata
 Thumbs.db
 ehthumbs.db
 Desktop.ini
@@ -32,6 +32,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .ruff_cache/
+.venv/
 node_modules/
 .npm/
 

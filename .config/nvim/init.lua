@@ -1,6 +1,6 @@
 -- Neovim Configuration
 -- Inspired by Kun Chen's Agentic Dev Environment ("L8 Principal's Agentic Dev Environment From Scratch")
--- Optimized for Windows 11 & Neovim 0.10+
+-- Optimized for Ubuntu WSL2 & Neovim 0.11+
 
 -- 1. General Options
 local opt = vim.opt
@@ -31,17 +31,6 @@ opt.softtabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 opt.smartindent = true
-
--- Windows PowerShell Shell Config for internal terminal / jobs
-if vim.fn.has("win32") == 1 then
-  local powershell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
-  vim.o.shell = powershell
-  vim.o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
-  vim.o.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-  vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-  vim.o.shellquote = ""
-  vim.o.shellxquote = ""
-end
 
 -- 2. Bootstrap lazy.nvim (Plugin Manager)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

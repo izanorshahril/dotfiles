@@ -1,13 +1,11 @@
-# Git Configuration - Windows Agentic Engineering
-# Location: ~/.gitconfig (C:\Users\<User>\.gitconfig)
+# Git Configuration - WSL2 Agentic Engineering
+# Included by ~/.gitconfig from the WSL2 setup script.
 
 [core]
     autocrlf = input
     safecrlf = warn
     excludesfile = ~/.config/git/.gitignore_global
-    editor = code --wait
-    longpaths = true
-    fscache = true
+    editor = nvim
 
 [init]
     defaultBranch = main
@@ -36,7 +34,7 @@
     last = log -1 HEAD --stat
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     
-    # Worktree workflow (Kun Chen / Treehouse style)
+    # Worktree workflow for isolated agent branches
     wt = worktree
     wtl = worktree list
     wta = worktree add

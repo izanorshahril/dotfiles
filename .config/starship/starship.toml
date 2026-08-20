@@ -1,5 +1,5 @@
-# Starship Prompt Configuration (Rosé Pine Moon - Agentic Windows Setup)
-# Location: ~/.config/starship.toml (C:\Users\<User>\.config\starship.toml)
+# Starship Prompt Configuration (Rosé Pine Moon - WSL2 Agentic Setup)
+# Location: ~/.config/starship.toml
 
 # Minimal 2-line prompt with high performance and git worktree awareness
 format = """

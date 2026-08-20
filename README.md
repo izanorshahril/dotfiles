@@ -1,161 +1,86 @@
-# Agentic Dotfiles for Windows 11 (L8 Principal Setup)
+# WSL2 Agentic Dotfiles
 
-Reproducible, agent-native development environment tailored for Windows 11, PowerShell 7, Windows Terminal, and the **Herdr** agent multiplexer.
-Ported from Kun Chen's Principal Engineer workflow (`5N-okeDdIuI`, `kPN564Kol14`).
+Reusable shell, Git, Neovim, Starship, and agent directives for an Ubuntu WSL2 development environment.
 
+The Windows host is intentionally kept thin:
+
+```text
+Windows Terminal
+        |
+        v
+WSL2 Ubuntu -> bash -> Starship -> Herdr / Pi / agents
+        |
+        +-> Git, jq, gh, uv, Bun, Neovim, AXI tools
 ```
+
+Keep active repositories inside the WSL filesystem, such as `~/src`, instead of `/mnt/c` or `/mnt/d`.
+This avoids cross-filesystem path, permissions, file-watch, and process-tree problems.
+
+## Layout
+
+```text
 dotfiles/
 ├── .config/
 │   ├── git/
-│   │   ├── .gitconfig
-│   │   └── .gitignore_global
-│   ├── herdr/
-│   │   └── config.toml
 │   ├── nvim/
-│   │   └── init.lua
 │   └── starship/
-│       └── starship.toml
 ├── agents/
 │   ├── AGENTS.md
-│   └── CLAUDE.md
-├── powershell/
-│   ├── Microsoft.PowerShell_profile.ps1
-│   └── modules/
-│       ├── AgentWorktree.psm1
-│       ├── HerdrTools.psm1
-│       └── WTBackdrop.psm1
+│   ├── CLAUDE.md
+│   └── skills-audit.md
 ├── scripts/
-│   ├── install.ps1
-│   ├── setup-agent-links.ps1
-│   ├── setup-git.ps1
-│   ├── setup-herdr.ps1
-│   ├── setup-profile.ps1
-│   ├── setup-starship.ps1
-│   ├── setup-terminal.ps1
-│   ├── sync.ps1
-│   └── test-env.ps1
-└── windows-terminal/
-    ├── settings.json
-    └── schemes/
-        └── rose-pine-moon.json
+│   ├── install-wsl.sh
+│   ├── setup-agent-links.sh
+│   ├── setup-git.sh
+│   ├── setup-shell.sh
+│   └── test-env.sh
+└── README.md
 ```
 
-## Architecture & Minimal Directives Topology
+## Install in WSL2
 
-```mermaid
-flowchart TD
-    User([User / Orchestrator]) --> WT[Windows Terminal]
-    WT --> Profile[PowerShell 7 + PSReadLine]
-    Profile --> HM[Herdr Multiplexer]
-    
-    subgraph Directives [Standardized Open Directives]
-        DotAgents[dotfiles/agents/AGENTS.md]
-        CanonAgents[~/.agents/AGENTS.md]
-        HomeAgents[~/AGENTS.md]
-        ClaudeMD[~/.claude/CLAUDE.md]
-        
-        DotAgents -->|Sync| CanonAgents
-        CanonAgents <-->|NTFS Hardlink| HomeAgents
-        DotAgents -->|Sync| ClaudeMD
-        
-        CanonAgents & HomeAgents -.-> AllHarnesses[All Harnesses: Codex, OpenCode, Pi, Kilo, Antigravity, Cursor, Goose, Aider]
-        ClaudeMD -.-> ClaudeCode[Claude Code]
-    end
+Run these commands inside Ubuntu WSL2:
 
-    subgraph HM [Herdr Multiplexer Session]
-        Side[Agent Status Sidebar]
-        Pane1[Controller Pane]
-        Pane2[Agent 1: Codex / Claude]
-        Pane3[Agent 2: Test Runner]
-    end
-
-    Pane1 -->|gwt new feature-x| WTTree[Git Worktree Isolation]
-    Pane2 -->|Works in| WTTree
-    Pane1 -->|herdr agent prompt| Pane2
-    Side -->|Tracks Lifecycle: working / idle / blocked| User
+```bash
+cd /mnt/d/Dev/dotfiles
+chmod +x scripts/*.sh
+./scripts/install-wsl.sh
 ```
 
-## Recommended Tooling & Ecosystem (Kun Chen Stack)
+For best repository performance, clone application repositories into `~/src`.
+The dotfiles repository may remain on the Windows drive while it is being migrated.
 
-### 1. Agent Multiplexing & Orchestration
-- **Herdr**: Agent-native terminal multiplexer in Rust that tracks live agent lifecycle states (`working`, `idle`, `blocked`, `done`), session persistence, and programmatic socket APIs.
-- **First Mate**: Captain-and-crew orchestrator for delegating tasks to subagent panes across multiplexer workspaces.
-- **GNHF** ("Good Night, Have Fun"): Asynchronous goal orchestrator for autonomous overnight agent task execution.
+The installer configures Git, global agent directives, bash, Starship, Neovim, and the WSL package prerequisites.
+It installs `jq` because Firstmate and the AXI tools use it for structured automation output.
+It installs `mise` only as a runtime manager, not as a wrapper around agent processes.
 
-### 2. Worktree & Context Isolation
-- **Treehouse** / **`New-AgentWorktree`** (`gwt`): Git worktree automation for creating isolated branch workspaces per task to prevent dirty working trees.
-- **Global `AGENTS.md`**: Standardized system instruction specification (Agentic AI Foundation) establishing deterministic, token-efficient agent behavior.
+## Agent tools
 
-### 3. Agent eXperience Interface (AXI) Tools
-- **No-Mistakes**: Local git pre-push validation proxy that runs AI agents to lint, review, and test code before remote push.
-- **Lavish-AXI**: Local artifact visualizer for rapid interactive UI review.
-- **Quota-AXI**: Unified CLI tracker for multi-provider LLM rate limits and token windows.
+Install Herdr, Pi, Treehouse, and the selected agent CLIs inside WSL2 after the base setup.
+Use each project's current Linux installation instructions rather than Windows binaries.
+Launch agents directly from the WSL shell so their paths, process ancestry, sockets, and workspaces share one Linux environment.
 
-### 4. Modern CLI & Terminal Utilities
-- **Starship**: Blazing fast, minimal cross-shell prompt (`winget install Starship.Starship`).
-- **Zoxide**: Smarter `cd` command with frecency jumping (`winget install ajeetdsouza.zoxide`).
-- **Fzf**: Interactive command-line fuzzy finder (`winget install junegunn.fzf`).
-- **Eza**: Modern replacement for `ls` with file icons, git status, and tree views (`winget install eza-community.eza`).
-- **Bat**: Syntax-highlighted `cat` replacement (`winget install sharkdp.bat`).
-- **Delta**: Syntax-highlighting git diff pager (`winget install dandavison.delta`).
-- **Lazygit**: Fast terminal UI for git (`winget install JesseDuffield.lazygit`).
-- **Btop**: Terminal resource monitor for CPU, GPU, RAM (`winget install aristocratos.btop4win`).
+The AXI tools remain useful for Windows automation and are also supported inside WSL2:
 
-### 5. Package Managers & Runtimes
-- **UV**: Ultra-fast Python package resolver and runner (`winget install astral-sh.uv`).
-- **Bun**: Fast JavaScript runtime, bundler, and test runner (`powershell -c "irm bun.sh/install.ps1 | iex"`).
+- `gh-axi` for GitHub operations.
+- `chrome-devtools-axi` for browser automation.
+- `lavish-axi` for visual review artifacts.
+- `quota-axi` for quota evidence.
+- `tasks-axi` for backlog operations.
+- `no-mistakes` for validation pipelines.
 
-### 6. Neovim Agentic Configuration
-- **Neovim (v0.11+)**: Configured with native `vim.lsp.config`, `vim.lsp.enable`, and `LspAttach` autocommands.
-- **Oil.nvim**: File explorer that edits directories like regular text buffers.
-- **Telescope.nvim**: Fuzzy finder for files, ripgrep searches, and LSP symbols.
-- **Treesitter**: Fast AST-based syntax highlighting and indentation.
-- **Which-Key.nvim**: Real-time visual keybinding popup.
+Install these tools in the environment that will execute them.
+Do not mix Windows and WSL installations for one agent session.
 
-## Installation & Deployment
+## Retained tools
 
-Run from PowerShell 7:
+Keep Windows Terminal, GitHub CLI, Copilot CLI, Agy CLI, Bun, uv, Starship, and the AXI tools available on Windows when an IDE or automation workflow still uses them.
+Keep the native Codex and Claude applications until their WSL replacements are verified.
 
-```powershell
-# One-shot idempotent installation
-pwsh .\scripts\install.ps1
+## Validation
 
-# Sync live configs into repository
-pwsh .\scripts\sync.ps1
-
-# Deploy / Refresh global agent directives
-pwsh .\scripts\setup-agent-links.ps1
-
-# Run diagnostic verification
-pwsh .\scripts\test-env.ps1
+```bash
+./scripts/test-env.sh
 ```
 
-## Keybindings & Shortcuts
-
-### Herdr (`ctrl+a` prefix)
-| Keybinding | Action |
-| :--- | :--- |
-| `ctrl+a` + `v` | Split pane vertically |
-| `ctrl+a` + `-` | Split pane horizontally |
-| `ctrl+a` + `h/j/k/l` | Navigate panes (Vim-style) |
-| `ctrl+a` + `z` | Zoom / Fullscreen active pane |
-| `ctrl+a` + `b` | Toggle agent sidebar |
-| `ctrl+a` + `c` | Create new tab |
-| `ctrl+a` + `w` | Workspace picker |
-| `ctrl+a` + `Shift+G` | New Git worktree in Herdr |
-| `ctrl+a` + `Shift+R` | Reload `config.toml` |
-| `ctrl+a` + `q` | Detach session |
-
-### PowerShell & Agent Workflow Commands
-| Command | Alias | Description |
-| :--- | :--- | :--- |
-| `Start-HerdrSession` | `h` | Launch / attach to Herdr |
-| `Get-HerdrStatus` | `hs` | Show Herdr client & server status |
-| `Get-HerdrAgents` | `hla` | List live agents and their lifecycle state |
-| `Start-HerdrAgent` | `hstart` | Split pane & spawn named agent (`hstart reviewer codex`) |
-| `Send-HerdrPrompt` | `hprompt` | Submit prompt to named agent (`hprompt reviewer "review diff" -Wait`) |
-| `New-AgentWorktree` | `gwt` | Create isolated git worktree branch for agent task |
-| `Get-AgentWorktrees` | `gwtl` | List active git worktrees |
-| `Remove-AgentWorktree`| `gwtrm` | Safely remove worktree |
-| `Sync-AgentDirectives`| `sync-agents` | Re-sync minimalist global directives |
-| `Set-WTBackdrop` | `backdrop`, `tb` | Toggle Windows Terminal acrylic / mica / solid backdrop |
+The check distinguishes required WSL tools from optional agent and AXI tools.
