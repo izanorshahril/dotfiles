@@ -2,7 +2,7 @@
 
 Review of every skill available to this environment, plus the global agent directives in `agents/CLAUDE.md`.
 
-Reviewed on 2026-08-20.
+Reviewed on 2026-08-22.
 
 This is a review only.
 Nothing was installed, uninstalled, or edited as a result of it.
@@ -144,6 +144,8 @@ Sources: `MP` mattpocock-skills, `H` honey, `IMP` impeccable, `ADHD` i-have-adhd
 | 83 | `principle-separate-before-serializing-shared-state` | PS | REMOVE | Same, and concurrency-specific, which is rare across this project set. |
 
 ## Proposed CLAUDE.md delta
+
+Status: applied on 2026-08-22 as the new `## Output` section in `CLAUDE.md` and `AGENTS.md`, which splits the agentic loop lane from the user-facing lane.
 
 Net effect is two lines out and six lines in.
 
