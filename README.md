@@ -1,21 +1,29 @@
-# WSL2 Agentic Dotfiles
+# Agentic Dotfiles
 
-Reusable shell, Git, Neovim, Starship, and agent directives for an Ubuntu WSL2 development environment.
+Reusable shell, Git, Neovim, Starship, and agent directives for both Ubuntu WSL2 and restricted Windows enterprise workstations.
 
-The Windows host is intentionally kept thin:
+```mermaid
+graph TD
+    WT[Windows Terminal]
+    WT -->|Personal Environment| WSL[WSL2 Ubuntu]
+    WT -->|Restricted Enterprise| CMD[cmd.exe + Clink]
+    WT -->|Scripting / POSIX| GB[Git Bash]
 
-```text
-Windows Terminal
-        |
-        v
-WSL2 Ubuntu -> bash -> Starship -> Herdr / Pi / agents
-        |
-        +-> Git, jq, gh, uv, Bun, Neovim, AXI tools
+    WSL --> Bash[bash]
+    Bash --> Starship1[Starship - Rosé Pine Moon]
+    Starship1 --> Tools1[Git, Neovim, uv, Bun, Agents]
+
+    CMD --> Starship2[Starship - Catppuccin Latte]
+    CMD --> ClinkAuto[Clink Inline Next-Word Suggestions]
+    ClinkAuto --> Tools2[Native Win32: uv, cargo, bun, Neovim]
+
+    GB --> Readline[GNU Readline ~/.inputrc]
+    GB --> Starship3[Starship Prompt]
 ```
 
-Keep active repositories inside the WSL filesystem, such as `~/src`, instead of `/mnt/c` or `/mnt/d`.
+Keep active repositories inside their target filesystem:
+Inside WSL (`~/src`) when working in WSL2, or on native Windows drives (`C:\Work`) when working in the restricted enterprise setup.
 This avoids cross-filesystem path, permissions, file-watch, and process-tree problems.
-
 ## Layout
 
 ```text
@@ -34,6 +42,17 @@ dotfiles/
 │   ├── setup-git.sh
 │   ├── setup-shell.sh
 │   └── test-env.sh
+├── windows/
+│   ├── .config/
+│   │   ├── clink/
+│   │   └── starship/
+│   ├── scripts/
+│   │   └── setup-windows.cmd
+│   ├── terminal/
+│   │   ├── .bashrc
+│   │   ├── .inputrc
+│   │   └── settings.json
+│   └── README.md
 └── README.md
 ```
 
@@ -84,3 +103,25 @@ Keep the native Codex and Claude applications until their WSL replacements are v
 ```
 
 The check distinguishes required WSL tools from optional agent and AXI tools.
+
+## Native Windows Workstation (Restricted Enterprise)
+
+For corporate/enterprise Windows laptops operating under AppLocker, WDAC, proxy, and Constrained Language Mode without WSL.
+
+See [`windows/README.md`](windows/README.md) for detailed architecture and security policy background.
+
+### Quick Install on Windows
+
+Run the automated installer from Command Prompt:
+
+```cmd
+cd windows\scripts
+setup-windows.cmd
+```
+
+Features configured:
+- **Primary shell**: `cmd.exe` with portable Clink (0 ms typing latency, native Win32 execution).
+- **Inline ghost text**: Next-word suggestions via `Ctrl+Right` and full accept via `Right Arrow`.
+- **Starship prompt**: Catppuccin-Powerline Latte theme with native UTF-8 glyph rendering.
+- **Git Bash**: Clean `~/.bashrc` and `~/.inputrc` for instant word navigation and history search.
+- **Neovim**: Portable user-space installation with the Rosé Pine Moon config from `.config/nvim/init.lua`.

@@ -1,0 +1,8 @@
+# Clink settings for Windows enterprise / restricted workstation
+
+# Show inline suggestion in a muted color (fish-style ghost text)
+# Right accepts full line, Ctrl+Right accepts next word
+autosuggest.inline = True
+
+# Omit startup copyright / version banner
+clink.logo = none
