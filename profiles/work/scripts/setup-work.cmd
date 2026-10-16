@@ -79,7 +79,7 @@ echo       Installed shims in: %LOCAL_BIN%
 echo [6/6] Checking Windows Terminal configuration...
 if exist "%WT_PKG_DIR%" (
     echo       To update Windows Terminal, copy:
-    echo       "%PROFILE_DIR%\terminal\settings.json" -> "%WT_PKG_DIR%\settings.json"
+    echo       "%PROFILE_DIR%\terminal\settings.json" to "%WT_PKG_DIR%\settings.json"
 )
 
 echo.
