@@ -36,6 +36,16 @@ dotfiles/
 │   ├── AGENTS.md
 │   ├── CLAUDE.md
 │   └── skills-audit.md
+├── profiles/
+│   └── work/
+│       ├── .config/
+│       │   ├── clink/
+│       │   └── starship/
+│       ├── bin/
+│       ├── powershell/
+│       ├── scripts/
+│       ├── terminal/
+│       └── README.md
 ├── scripts/
 │   ├── install-wsl.sh
 │   ├── setup-agent-links.sh
@@ -112,16 +122,22 @@ See [`windows/README.md`](windows/README.md) for detailed architecture and secur
 
 ### Quick Install on Windows
 
-Run the automated installer from Command Prompt:
-
-```cmd
-cd windows\scripts
-setup-windows.cmd
-```
+- **Base Enterprise Setup (Catppuccin Latte)**:
+  ```cmd
+  cd windows\scripts
+  setup-windows.cmd
+  ```
+- **Work / Office Profile (Gruvbox Dark + Async Clink + PSReadLine + Terminal Actions)**:
+  ```cmd
+  cd windows\scripts
+  setup-windows.cmd work
+  ```
+  *(See [`profiles/work/README.md`](profiles/work/README.md) for full profile architecture and keybindings).*
 
 Features configured:
 - **Primary shell**: `cmd.exe` with portable Clink (0 ms typing latency, native Win32 execution).
-- **Inline ghost text**: Next-word suggestions via `Ctrl+Right` and full accept via `Right Arrow`.
-- **Starship prompt**: Catppuccin-Powerline Latte theme with native UTF-8 glyph rendering.
-- **Git Bash**: Clean `~/.bashrc` and `~/.inputrc` for instant word navigation and history search.
+- **Inline ghost text & Tab completion**: Tab dropdown IntelliSense + ghost-text suggestions via `Ctrl+Right` / `Right Arrow`.
+- **Starship prompt**: Catppuccin Latte or Gruvbox Dark theme with native UTF-8 glyph rendering.
+- **PowerShell**: PSReadLine InlineView predictive history and CLM-compatible Starship prompt.
+- **Git Bash**: Clean `~/.bashrc`, `~/.bash_profile`, and `~/.inputrc` for instant word navigation and Clink-compatible backspace.
 - **Neovim**: Portable user-space installation with the Rosé Pine Moon config from `.config/nvim/init.lua`.

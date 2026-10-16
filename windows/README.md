@@ -39,7 +39,8 @@ Windows Terminal (Default Profile: Command Prompt)
 windows/
 ├── .config/
 │   ├── starship/
-│   │   └── starship-catppuccin-latte.toml   # Catppuccin-Powerline Latte preset with Windows glyph spacing
+│   │   ├── starship-catppuccin-latte.toml   # Catppuccin-Powerline Latte preset
+│   │   └── starship-gruvbox-dark.toml       # Gruvbox Dark powerline preset
 │   └── clink/
 │       ├── starship.lua                      # Clink Lua prompt filter for Starship
 │       └── clink_settings                   # Inline autosuggestions (True) and clean logo (none)
@@ -48,17 +49,28 @@ windows/
 │   ├── .inputrc                              # GNU Readline history search & word navigation
 │   └── .bashrc                               # Clean Git Bash profile with Starship
 ├── scripts/
-│   └── setup-windows.cmd                     # Automated installer for cmd + Clink + Starship
+│   └── setup-windows.cmd                     # Automated installer (supports 'setup-windows.cmd work')
 └── README.md
 ```
 
-## Installation
+## Profiles & Installation
 
-Run the automated setup from Command Prompt:
+### Default Profile (Catppuccin Latte)
+
+Run the standard automated setup from Command Prompt:
 
 ```cmd
 cd windows\scripts
 setup-windows.cmd
+```
+
+### Dedicated Work / Office Profile (Gruvbox Dark + Async Clink + PSReadLine)
+
+For corporate workstations with asynchronous prompt rendering, hybrid IntelliSense Tab completions, PSReadLine, and Windows Terminal custom actions, see [`profiles/work/README.md`](../../profiles/work/README.md) or run:
+
+```cmd
+cd windows\scripts
+setup-windows.cmd work
 ```
 
 ### Toolchain Prerequisites (User-space)

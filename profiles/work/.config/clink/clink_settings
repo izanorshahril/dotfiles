@@ -1,0 +1,5 @@
+# Tab completes word or accepts next suggest word, Right accepts full line
+autosuggest.enable = True
+# Enable IntelliSense-style candidate dropdown by default (toggle anytime with F2)
+suggestionlist.default = True
+clink.logo = none

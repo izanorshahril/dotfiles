@@ -11,6 +11,10 @@ set "WINDOWS_DIR=%SCRIPT_DIR%.."
 set "CONFIG_DIR=%USERPROFILE%\.config"
 set "CLINK_DIR=%LOCALAPPDATA%\clink"
 
+:: Delegate to Work profile if requested
+if /i "%~1"=="work" goto :delegate_work
+if /i "%~1"=="office" goto :delegate_work
+
 :: 1. Deploy Starship Configuration (Catppuccin-Powerline Latte)
 echo [1/4] Deploying Starship configuration...
 if not exist "%CONFIG_DIR%" mkdir "%CONFIG_DIR%"
@@ -55,3 +59,13 @@ echo ========================================================
 echo   Setup Complete!
 echo   Open a new cmd.exe or Git Bash terminal to test.
 echo ========================================================
+exit /b 0
+
+:delegate_work
+if exist "%WINDOWS_DIR%\..\profiles\work\scripts\setup-work.cmd" (
+    call "%WINDOWS_DIR%\..\profiles\work\scripts\setup-work.cmd"
+    exit /b %ERRORLEVEL%
+) else (
+    echo [ERROR] Work profile setup script not found at profiles\work\scripts\setup-work.cmd
+    exit /b 1
+)

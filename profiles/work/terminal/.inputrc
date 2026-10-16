@@ -1,0 +1,38 @@
+# Git Bash and Clink GNU Readline configuration
+# Location: ~/.inputrc
+
+# Enable 8-bit input/output (for UTF-8 glyphs and symbols)
+set meta-flag on
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Ignore case when completing
+set completion-ignore-case on
+
+# Show all completions immediately instead of ringing bell
+set show-all-if-ambiguous on
+
+# Color matching prefixes
+set colored-stats on
+set colored-completion-prefix on
+
+# History search with Up/Down arrows
+# Type part of a command and press Up to cycle matching history
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Word navigation with Ctrl+Left / Ctrl+Right
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+# Word deletion with Ctrl+Backspace / Ctrl+Delete
+"\e[3;5~": kill-word
+
+$if clink
+# Clink (cmd.exe): Backspace sends \C-h
+"\C-h": backward-delete-char
+$else
+# Git Bash / MSYS2: Ctrl+Backspace sends \C-h
+"\C-h": backward-kill-word
+$endif
